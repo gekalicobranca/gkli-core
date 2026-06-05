@@ -1,9 +1,14 @@
 import { ShieldPlus } from "lucide-react";
-import { accessTypes } from "@/features/gkli-core/mock-data";
+import { createAccessTypeAction } from "@/features/gkli-core/actions";
 import { corePermissions } from "@/features/gkli-core/module-config";
+import { getCoreData } from "@/features/gkli-core/repository";
 import { CoreShell, PageHeader, Panel, StatusBadge } from "@/features/gkli-core/ui";
 
-export default function AcessosPage() {
+export const dynamic = "force-dynamic";
+
+export default async function AcessosPage() {
+  const { accessTypes } = await getCoreData();
+
   return (
     <CoreShell
       activeHref="/modulos/gkli-core/acessos"
@@ -48,6 +53,43 @@ export default function AcessosPage() {
               </div>
             ))}
           </div>
+        </Panel>
+      </div>
+
+      <div className="stack-lg">
+        <Panel title="Novo tipo de acesso" note="Permissoes iniciais">
+          <form action={createAccessTypeAction} className="form-grid">
+            <label>
+              Nome
+              <input name="nome" placeholder="Operacao avancada" required />
+            </label>
+            <label>
+              Nivel
+              <select name="nivel" defaultValue="carteira">
+                <option value="carteira">Carteira</option>
+                <option value="global">Global</option>
+              </select>
+            </label>
+            <label className="span-2">
+              Descricao
+              <input name="descricao" placeholder="Resumo do que este perfil pode operar" />
+            </label>
+            <fieldset>
+              <legend>Permissoes do Core</legend>
+              <div className="check-grid">
+                {corePermissions.map((permission) => (
+                  <label className="check-row" key={permission}>
+                    <input name="permissions" type="checkbox" value={permission} />
+                    {permission}
+                  </label>
+                ))}
+              </div>
+            </fieldset>
+            <button className="button" type="submit">
+              <ShieldPlus size={16} />
+              Salvar tipo
+            </button>
+          </form>
         </Panel>
       </div>
     </CoreShell>

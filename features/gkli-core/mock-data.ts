@@ -5,17 +5,17 @@ export const users = [
     email: "mariana.lopes@gkli.com.br",
     status: "Ativo",
     tipoAcesso: "Administrador",
-    apps: ["COB", "Flex", "Core"],
-    carteiras: ["Administradora Modelo", "Condominios RJ"]
+    apps: ["COB", "Flex", "Core", "Colab"],
+    carteiras: ["Administradora Modelo", "Condomínios RJ"]
   },
   {
     id: "usr_002",
     nome: "Rafael Nunes",
     email: "rafael.nunes@gkli.com.br",
     status: "Ativo",
-    tipoAcesso: "Operacao",
-    apps: ["COB", "Core"],
-    carteiras: ["Condominios SP"]
+    tipoAcesso: "Operação",
+    apps: ["COB", "Core", "Colab"],
+    carteiras: ["Condomínios SP"]
   },
   {
     id: "usr_003",
@@ -32,14 +32,14 @@ export const accessTypes = [
   {
     id: "admin",
     nome: "Administrador",
-    descricao: "Pode gerenciar usuarios, apps, carteiras e permissoes globais.",
+    descricao: "Pode gerenciar usuários, apps, carteiras e permissões globais.",
     nivel: "Global",
     usuarios: 1
   },
   {
     id: "operacao",
-    nome: "Operacao",
-    descricao: "Acesso operacional aos apps habilitados e as carteiras vinculadas.",
+    nome: "Operação",
+    descricao: "Acesso operacional aos apps habilitados e às carteiras vinculadas.",
     nivel: "Carteira",
     usuarios: 1
   },
@@ -59,7 +59,7 @@ export const apps = [
     namespace: "gkli_cob",
     status: "Ativo",
     usuarios: 2,
-    descricao: "Cobranca, acordos, regua e mensageria."
+    descricao: "Cobrança, acordos, régua e mensageria."
   },
   {
     id: "gkli_flex",
@@ -76,6 +76,49 @@ export const apps = [
     status: "Sistema",
     usuarios: 1,
     descricao: "Identidade, acessos, apps e carteiras."
+  },
+  {
+    id: "gkli_colab",
+    nome: "GKLI Colab",
+    namespace: "gkli_colab",
+    status: "Ativo",
+    usuarios: 2,
+    descricao: "Área do colaborador para pagamentos e recibos."
+  }
+];
+
+export const platformApps = [
+  {
+    id: "gkli_core",
+    nome: "GKLI Core",
+    descricao: "Usuários, carteiras, perfis, apps e auditoria.",
+    area: "Administração",
+    status: "Operacional",
+    href: "/modulos/gkli-core/cockpit"
+  },
+  {
+    id: "gkli_cob",
+    nome: "GKLI COB",
+    descricao: "Cobrança, acordos, régua e mensageria.",
+    area: "Cobrança",
+    status: "Operacional",
+    href: process.env.NEXT_PUBLIC_GKLI_COB_URL ?? "#"
+  },
+  {
+    id: "gkli_flex",
+    nome: "GKLI Flex",
+    descricao: "Financeiro operacional, pagamentos e fechamentos.",
+    area: "Financeiro",
+    status: "Operacional",
+    href: process.env.NEXT_PUBLIC_GKLI_FLEX_URL ?? "#"
+  },
+  {
+    id: "gkli_colab",
+    nome: "GKLI Colab",
+    descricao: "Portal individual de colaboradores, pagamentos e recibos.",
+    area: "Portal do colaborador",
+    status: "Operacional",
+    href: process.env.NEXT_PUBLIC_GKLI_COLAB_URL ?? "#"
   }
 ];
 
@@ -90,7 +133,7 @@ export const wallets = [
   },
   {
     id: "cart_002",
-    nome: "Condominios RJ",
+    nome: "Condomínios RJ",
     codigo: "COB-RJ",
     appOrigem: "GKLI COB",
     usuarios: 1,
@@ -103,25 +146,33 @@ export const wallets = [
     appOrigem: "GKLI Flex",
     usuarios: 1,
     status: "Ativa"
+  },
+  {
+    id: "cart_004",
+    nome: "Colaboradores GKLI",
+    codigo: "COLAB-GKLI",
+    appOrigem: "GKLI Colab",
+    usuarios: 2,
+    status: "Ativa"
   }
 ];
 
 export const cockpitTasks = [
   {
-    title: "Padronizar permissoes entre Core, COB e Flex",
-    meta: "Permissoes devem nascer no Core e ser consumidas pelos apps.",
+    title: "Padronizar permissões entre Core, COB e Flex",
+    meta: "Permissões devem nascer no Core e ser consumidas pelos apps.",
     status: "Arquitetura",
     tone: "blue"
   },
   {
     title: "Definir regra de carteira global",
-    meta: "Admins podem enxergar tudo; usuarios comuns precisam de vinculo explicito.",
-    status: "Critico",
+    meta: "Admins podem enxergar tudo; usuários comuns precisam de vínculo explícito.",
+    status: "Crítico",
     tone: "yellow"
   },
   {
-    title: "Auditar vinculos pendentes",
-    meta: "Usuarios sem app ou sem carteira devem aparecer como pendencia operacional.",
+    title: "Auditar vínculos pendentes",
+    meta: "Usuários sem app ou sem carteira devem aparecer como pendência operacional.",
     status: "Pendente",
     tone: "red"
   }

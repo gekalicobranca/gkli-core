@@ -23,14 +23,21 @@ export const corePermissions = [
 
 export const coreModules = [
   {
-    title: "Cockpit",
+    title: "Hub de Apps",
     href: "/modulos/gkli-core",
-    icon: LayoutDashboard,
+    icon: AppWindow,
     permission: "gkli_core.usuarios.read",
-    group: "Governanca"
+    group: "Acesso"
   },
   {
-    title: "Usuarios",
+    title: "Cockpit",
+    href: "/modulos/gkli-core/cockpit",
+    icon: LayoutDashboard,
+    permission: "gkli_core.usuarios.read",
+    group: "Governança"
+  },
+  {
+    title: "Usuários",
     href: "/modulos/gkli-core/usuarios",
     icon: Users,
     permission: "gkli_core.usuarios.read",
@@ -48,14 +55,14 @@ export const coreModules = [
     href: "/modulos/gkli-core/apps",
     icon: AppWindow,
     permission: "gkli_core.apps.read",
-    group: "Permissoes"
+    group: "Permissões"
   },
   {
     title: "Carteiras",
     href: "/modulos/gkli-core/carteiras",
     icon: BriefcaseBusiness,
     permission: "gkli_core.carteiras.read",
-    group: "Permissoes"
+    group: "Permissões"
   },
   {
     title: "Chaves e auditoria",

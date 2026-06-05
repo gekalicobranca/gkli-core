@@ -31,6 +31,8 @@ create table if not exists gkli_core.apps (
   created_at timestamptz not null default now()
 );
 
+-- Namespaces iniciais esperados: gkli_core, gkli_flex, gkli_colab.
+
 create table if not exists gkli_core.carteiras (
   id uuid primary key default gen_random_uuid(),
   nome text not null,

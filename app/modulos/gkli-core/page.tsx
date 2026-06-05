@@ -1,103 +1,91 @@
-import { AlertTriangle, CheckCircle2, Clock3, Database } from "lucide-react";
-import { accessTypes, apps, cockpitTasks, users, wallets } from "@/features/gkli-core/mock-data";
-import { CoreShell, PageHeader, Panel, StatusBadge } from "@/features/gkli-core/ui";
+import Link from "next/link";
+import { ArrowRight, CheckCircle2, KeyRound, Network, ShieldCheck } from "lucide-react";
+import { platformApps } from "@/features/gkli-core/mock-data";
+import { CoreShell, PageHeader, StatusBadge } from "@/features/gkli-core/ui";
 
-export default function CoreCockpitPage() {
+export default function CoreHubPage() {
   return (
     <CoreShell
       activeHref="/modulos/gkli-core"
-      title="Cockpit Core"
-      description="Base central para identidade, acesso, apps permitidos e carteiras."
+      title="Hub de Apps"
+      description="Acesso central aos aplicativos GKLI."
     >
       <PageHeader
-        eyebrow="Governanca"
-        title="Controle estrutural da GKLI"
-        description="O Core concentra os cadastros que os outros apps devem consultar: quem e o usuario, qual tipo de acesso ele possui, quais apps pode abrir e quais carteiras entram no seu escopo."
+        eyebrow="Plataforma"
+        title="Apps da Gekali"
+        description="Core, COB, Flex e Colab reunidos em um ponto único para acesso, identidade, perfil e escopo operacional."
       />
 
-      <div className="grid cols-3">
-        <Panel title="Usuarios" note="Diretorio">
-          <div className="metric">{users.length}</div>
-          <p className="item-meta">Usuarios cadastrados na base central.</p>
-        </Panel>
-        <Panel title="Apps governados" note="Permissao">
-          <div className="metric">{apps.length}</div>
-          <p className="item-meta">Aplicativos com namespace e acesso controlado.</p>
-        </Panel>
-        <Panel title="Carteiras" note="Escopo">
-          <div className="metric">{wallets.length}</div>
-          <p className="item-meta">Carteiras disponiveis para vinculo por usuario.</p>
-        </Panel>
-      </div>
+      <section className="hub-hero">
+        <div>
+          <div className="hub-kicker">GKLI Suite</div>
+          <h2 className="hub-title">Selecione o sistema desejado para acessar.</h2>
+        </div>
+        <div className="hub-summary-grid" aria-label="Resumo da plataforma">
+          {[
+            ["4 apps", "Core, COB, Flex e Colab", Network],
+            ["Perfil central", "Acesso ativo no Core", ShieldCheck],
+            ["Login único", "Base de identidade centralizada", KeyRound]
+          ].map(([title, description, Icon]) => {
+            const TypedIcon = Icon as typeof Network;
 
-      <div className="grid cols-2 stack-lg">
-        <Panel title="Prioridades de implantacao" note="Estrutura">
-          <div className="list">
-            {cockpitTasks.map((task) => (
-              <div className="list-item" key={task.title}>
-                <div>
-                  <div className="item-title">{task.title}</div>
-                  <div className="item-meta">{task.meta}</div>
-                </div>
-                <StatusBadge tone={task.tone as "blue" | "yellow" | "red"}>
-                  {task.status}
-                </StatusBadge>
+            return (
+              <div className="hub-summary" key={title as string}>
+                <span className="hub-summary-icon">
+                  <TypedIcon size={18} />
+                </span>
+                <span>
+                  <strong>{title as string}</strong>
+                  <small>{description as string}</small>
+                </span>
               </div>
-            ))}
-          </div>
-        </Panel>
+            );
+          })}
+        </div>
+      </section>
 
-        <Panel title="Modelo atual" note="Visao logica">
-          <div className="list">
-            {[
-              ["Usuarios", "Pessoa, email, status e identidade de login.", CheckCircle2],
-              ["Tipos de acesso", "Perfil base que define permissoes e nivel.", Clock3],
-              ["Apps permitidos", "Lista de apps autorizados por usuario.", Database],
-              ["Carteiras", "Escopo operacional aplicado aos apps.", AlertTriangle]
-            ].map(([title, meta, Icon]) => {
-              const TypedIcon = Icon as typeof CheckCircle2;
-
-              return (
-                <div className="list-item" key={title as string}>
-                  <div style={{ alignItems: "center", display: "flex", gap: 10 }}>
-                    <TypedIcon color="#0f4c81" size={17} />
-                    <div>
-                      <div className="item-title">{title as string}</div>
-                      <div className="item-meta">{meta as string}</div>
-                    </div>
-                  </div>
-                </div>
-              );
-            })}
-          </div>
-        </Panel>
+      <div className="section-heading">
+        <h2>Sistemas disponíveis</h2>
+        <p>Escolha o aplicativo conforme a rotina que deseja executar.</p>
       </div>
 
-      <div className="stack-lg">
-        <Panel title="Tipos de acesso ativos" note="Perfis base">
-          <table className="table">
-            <thead>
-              <tr>
-                <th>Tipo</th>
-                <th>Nivel</th>
-                <th>Usuarios</th>
-                <th>Descricao</th>
-              </tr>
-            </thead>
-            <tbody>
-              {accessTypes.map((item) => (
-                <tr key={item.id}>
-                  <td>{item.nome}</td>
-                  <td>
-                    <StatusBadge>{item.nivel}</StatusBadge>
-                  </td>
-                  <td>{item.usuarios}</td>
-                  <td>{item.descricao}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </Panel>
+      <div className="app-card-grid">
+        {platformApps.map((app) => {
+          const hasLink = app.href !== "#";
+
+          return (
+            <article className="app-card" key={app.id}>
+              <div className="app-card-art">
+                <img alt="" src="/gkit-icon.png" />
+              </div>
+              <div className="app-card-body">
+                <div>
+                  <h3>{app.nome}</h3>
+                  <p>{app.descricao}</p>
+                  <span className="app-area">{app.area}</span>
+                </div>
+                <div className="app-card-footer">
+                  <span className="status-inline">
+                    <CheckCircle2 size={14} />
+                    {app.status}
+                  </span>
+                  {hasLink ? (
+                    <Link className="button secondary app-access-button" href={app.href}>
+                      Acessar
+                      <ArrowRight size={15} />
+                    </Link>
+                  ) : (
+                    <button className="button secondary app-access-button" disabled>
+                      Acessar
+                      <ArrowRight size={15} />
+                    </button>
+                  )}
+                </div>
+              </div>
+              {!hasLink ? <StatusBadge tone="yellow">Link pendente</StatusBadge> : null}
+            </article>
+          );
+        })}
       </div>
     </CoreShell>
   );

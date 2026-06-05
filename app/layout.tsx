@@ -3,7 +3,7 @@ import "./globals.css";
 
 export const metadata: Metadata = {
   title: "GKLI Core",
-  description: "Base central de usuarios, acessos, apps e carteiras da Gekali"
+  description: "Base central de usuários, acessos, apps e carteiras da Gekali"
 };
 
 export default function RootLayout({
