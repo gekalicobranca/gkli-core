@@ -147,7 +147,7 @@ textarea {
   border-bottom: 1px solid var(--line);
   display: flex;
   gap: 16px;
-  justify-content: space-between;
+  justify-content: flex-end;
   min-height: 60px;
   padding: 0 28px;
   position: sticky;
@@ -155,15 +155,43 @@ textarea {
   z-index: 10;
 }
 
-.module-title {
-  font-size: 16px;
+.topbar-account {
+  align-items: center;
+  display: flex;
+  gap: 10px;
+  min-width: 0;
+}
+
+.topbar-avatar {
+  align-items: center;
+  background: var(--classic-blue-50);
+  border-radius: 999px;
+  color: var(--classic-blue-700);
+  display: inline-flex;
+  height: 34px;
+  justify-content: center;
+  width: 34px;
+}
+
+.topbar-user-name,
+.topbar-user-email {
+  display: block;
+  line-height: 1.25;
+}
+
+.topbar-user-name {
+  font-size: 13px;
   font-weight: 500;
 }
 
-.module-context {
+.topbar-user-email {
   color: var(--muted);
-  font-size: 13px;
-  margin-top: 3px;
+  font-size: 12px;
+}
+
+.topbar-logout {
+  min-height: 34px;
+  padding: 7px 10px;
 }
 
 .content {
@@ -753,10 +781,16 @@ textarea {
     grid-template-columns: 1fr;
   }
 
-  .page-header,
-  .topbar {
+  .page-header {
     align-items: stretch;
     flex-direction: column;
+  }
+
+  .topbar {
+    align-items: center;
+    flex-direction: row;
+    justify-content: space-between;
+    padding: 10px 14px;
   }
 
   .hub-hero,

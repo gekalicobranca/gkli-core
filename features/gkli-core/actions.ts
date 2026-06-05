@@ -116,6 +116,8 @@ async function replaceUserLinks({
 }
 
 export async function createUserAction(formData: FormData) {
+  let actionError: string | null = null;
+
   try {
     const db = getDb();
     const nome = getText(formData, "nome");
@@ -158,13 +160,19 @@ export async function createUserAction(formData: FormData) {
 
     revalidateCore();
   } catch (error) {
-    redirectToUsuarios("error", getActionErrorMessage(error));
+    actionError = getActionErrorMessage(error);
+  }
+
+  if (actionError) {
+    redirectToUsuarios("error", actionError);
   }
 
   redirectToUsuarios("success", "Usuario salvo com sucesso.");
 }
 
 export async function updateUserAction(formData: FormData) {
+  let actionError: string | null = null;
+
   try {
     const db = getDb();
     const id = getText(formData, "id");
@@ -208,13 +216,19 @@ export async function updateUserAction(formData: FormData) {
 
     revalidateCore();
   } catch (error) {
-    redirectToUsuarios("error", getActionErrorMessage(error));
+    actionError = getActionErrorMessage(error);
+  }
+
+  if (actionError) {
+    redirectToUsuarios("error", actionError);
   }
 
   redirectToUsuarios("success", "Usuario atualizado com sucesso.");
 }
 
 export async function deactivateUserAction(formData: FormData) {
+  let actionError: string | null = null;
+
   try {
     const db = getDb();
     const id = getText(formData, "id");
@@ -243,7 +257,11 @@ export async function deactivateUserAction(formData: FormData) {
 
     revalidateCore();
   } catch (error) {
-    redirectToUsuarios("error", getActionErrorMessage(error));
+    actionError = getActionErrorMessage(error);
+  }
+
+  if (actionError) {
+    redirectToUsuarios("error", actionError);
   }
 
   redirectToUsuarios("success", "Usuario desativado.");

@@ -18,7 +18,8 @@ type UsuariosPageProps = {
 
 export default async function UsuariosPage({ searchParams }: UsuariosPageProps) {
   const params = await searchParams;
-  const { accessTypes, apps, users, wallets } = await getCoreData();
+  const { accessTypes, apps, source, users, wallets } = await getCoreData();
+  const isReadOnly = source === "mock";
 
   return (
     <CoreShell
@@ -47,6 +48,16 @@ export default async function UsuariosPage({ searchParams }: UsuariosPageProps) 
       {params?.success ? (
         <div className="stack-lg">
           <InlineNotice title="Operacao concluida" description={params.success} tone="green" />
+        </div>
+      ) : null}
+
+      {isReadOnly ? (
+        <div className="stack-lg">
+          <InlineNotice
+            title="Ambiente em modo demonstracao"
+            description="O Core nao conseguiu ler o Supabase real neste ambiente. Configure SUPABASE_SERVICE_ROLE_KEY e confirme o schema gkli_core antes de salvar usuarios."
+            tone="yellow"
+          />
         </div>
       ) : null}
 
@@ -152,7 +163,7 @@ export default async function UsuariosPage({ searchParams }: UsuariosPageProps) 
               </div>
             </fieldset>
 
-            <button className="button" type="submit">
+            <button className="button" disabled={isReadOnly} type="submit">
               <UserPlus size={16} />
               Salvar usuario
             </button>
@@ -240,13 +251,13 @@ export default async function UsuariosPage({ searchParams }: UsuariosPageProps) 
                       </div>
                     </fieldset>
 
-                    <button className="button" type="submit">
+                    <button className="button" disabled={isReadOnly} type="submit">
                       Salvar alteracoes
                     </button>
                   </form>
                   <form action={deactivateUserAction} className="inline-form">
                     <input name="id" type="hidden" value={user.id} />
-                    <button className="button secondary" type="submit">
+                    <button className="button secondary" disabled={isReadOnly} type="submit">
                       Desativar usuario
                     </button>
                   </form>

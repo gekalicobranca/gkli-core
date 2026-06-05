@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { LogOut, UserCircle } from "lucide-react";
 import { coreModules } from "./module-config";
 
 type CoreShellProps = {
@@ -57,11 +58,19 @@ export function CoreShell({
 
       <main className="main">
         <header className="topbar">
-          <div>
-            <div className="module-title">{title}</div>
-            {description ? <div className="module-context">{description}</div> : null}
+          <div className="topbar-account" aria-label="Usuario logado">
+            <span className="topbar-avatar">
+              <UserCircle size={18} />
+            </span>
+            <span>
+              <span className="topbar-user-name">Operador Core</span>
+              <span className="topbar-user-email">sessao administrativa</span>
+            </span>
           </div>
-          <span className="badge blue">Base central</span>
+          <Link className="button secondary topbar-logout" href="/">
+            <LogOut size={15} />
+            Sair
+          </Link>
         </header>
         <section className="content">{children}</section>
       </main>
