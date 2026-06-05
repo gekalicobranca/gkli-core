@@ -1,6 +1,7 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
+import { redirect } from "next/navigation";
 import { createCoreSupabaseClient, getCoreSchemaName } from "./supabase";
 
 const corePaths = [
@@ -35,6 +36,28 @@ function revalidateCore() {
   for (const path of corePaths) {
     revalidatePath(path);
   }
+}
+
+function getActionErrorMessage(error: unknown) {
+  const message = error instanceof Error ? error.message : "Nao foi possivel concluir a operacao.";
+
+  if (message.includes("duplicate key") || message.includes("usuarios_email_key")) {
+    return "Ja existe um usuario cadastrado com este email.";
+  }
+
+  if (message.includes("SUPABASE_SERVICE_ROLE_KEY")) {
+    return "A chave server-side do Supabase nao esta configurada no ambiente de producao.";
+  }
+
+  if (message.includes("violates foreign key")) {
+    return "Algum vinculo selecionado nao existe mais. Recarregue a tela e tente novamente.";
+  }
+
+  return message;
+}
+
+function redirectToUsuarios(type: "error" | "success", message: string): never {
+  redirect(`/modulos/gkli-core/usuarios?${type}=${encodeURIComponent(message)}`);
 }
 
 async function auditEvent({
@@ -93,119 +116,137 @@ async function replaceUserLinks({
 }
 
 export async function createUserAction(formData: FormData) {
-  const db = getDb();
-  const nome = getText(formData, "nome");
-  const email = getText(formData, "email").toLowerCase();
-  const status = getText(formData, "status") || "ativo";
-  const tipoAcessoId = getText(formData, "tipo_acesso_id") || null;
-  const appIds = getValues(formData, "app_ids");
-  const carteiraIds = getValues(formData, "carteira_ids");
+  try {
+    const db = getDb();
+    const nome = getText(formData, "nome");
+    const email = getText(formData, "email").toLowerCase();
+    const status = getText(formData, "status") || "ativo";
+    const tipoAcessoId = getText(formData, "tipo_acesso_id") || null;
+    const appIds = getValues(formData, "app_ids");
+    const carteiraIds = getValues(formData, "carteira_ids");
 
-  if (!nome || !email) {
-    throw new Error("Nome e email sao obrigatorios.");
+    if (!nome || !email) {
+      throw new Error("Nome e email sao obrigatorios.");
+    }
+
+    const { data, error } = await db
+      .from("usuarios")
+      .insert({
+        email,
+        nome,
+        status,
+        tipo_acesso_id: tipoAcessoId
+      })
+      .select("id")
+      .single();
+
+    if (error) {
+      throw new Error(error.message);
+    }
+
+    await replaceUserLinks({
+      appIds,
+      carteiraIds,
+      usuarioId: data.id
+    });
+    await auditEvent({
+      acao: "usuario.criado",
+      entidade: "usuarios",
+      entidadeId: data.id,
+      payload: { appIds, carteiraIds, email, nome, status, tipoAcessoId }
+    });
+
+    revalidateCore();
+  } catch (error) {
+    redirectToUsuarios("error", getActionErrorMessage(error));
   }
 
-  const { data, error } = await db
-    .from("usuarios")
-    .insert({
-      email,
-      nome,
-      status,
-      tipo_acesso_id: tipoAcessoId
-    })
-    .select("id")
-    .single();
-
-  if (error) {
-    throw new Error(error.message);
-  }
-
-  await replaceUserLinks({
-    appIds,
-    carteiraIds,
-    usuarioId: data.id
-  });
-  await auditEvent({
-    acao: "usuario.criado",
-    entidade: "usuarios",
-    entidadeId: data.id,
-    payload: { appIds, carteiraIds, email, nome, status, tipoAcessoId }
-  });
-
-  revalidateCore();
+  redirectToUsuarios("success", "Usuario salvo com sucesso.");
 }
 
 export async function updateUserAction(formData: FormData) {
-  const db = getDb();
-  const id = getText(formData, "id");
-  const nome = getText(formData, "nome");
-  const email = getText(formData, "email").toLowerCase();
-  const status = getText(formData, "status") || "ativo";
-  const tipoAcessoId = getText(formData, "tipo_acesso_id") || null;
-  const appIds = getValues(formData, "app_ids");
-  const carteiraIds = getValues(formData, "carteira_ids");
+  try {
+    const db = getDb();
+    const id = getText(formData, "id");
+    const nome = getText(formData, "nome");
+    const email = getText(formData, "email").toLowerCase();
+    const status = getText(formData, "status") || "ativo";
+    const tipoAcessoId = getText(formData, "tipo_acesso_id") || null;
+    const appIds = getValues(formData, "app_ids");
+    const carteiraIds = getValues(formData, "carteira_ids");
 
-  if (!id || !nome || !email) {
-    throw new Error("Usuario, nome e email sao obrigatorios.");
+    if (!id || !nome || !email) {
+      throw new Error("Usuario, nome e email sao obrigatorios.");
+    }
+
+    const { error } = await db
+      .from("usuarios")
+      .update({
+        email,
+        nome,
+        status,
+        tipo_acesso_id: tipoAcessoId,
+        updated_at: new Date().toISOString()
+      })
+      .eq("id", id);
+
+    if (error) {
+      throw new Error(error.message);
+    }
+
+    await replaceUserLinks({
+      appIds,
+      carteiraIds,
+      usuarioId: id
+    });
+    await auditEvent({
+      acao: "usuario.atualizado",
+      entidade: "usuarios",
+      entidadeId: id,
+      payload: { appIds, carteiraIds, email, nome, status, tipoAcessoId }
+    });
+
+    revalidateCore();
+  } catch (error) {
+    redirectToUsuarios("error", getActionErrorMessage(error));
   }
 
-  const { error } = await db
-    .from("usuarios")
-    .update({
-      email,
-      nome,
-      status,
-      tipo_acesso_id: tipoAcessoId,
-      updated_at: new Date().toISOString()
-    })
-    .eq("id", id);
-
-  if (error) {
-    throw new Error(error.message);
-  }
-
-  await replaceUserLinks({
-    appIds,
-    carteiraIds,
-    usuarioId: id
-  });
-  await auditEvent({
-    acao: "usuario.atualizado",
-    entidade: "usuarios",
-    entidadeId: id,
-    payload: { appIds, carteiraIds, email, nome, status, tipoAcessoId }
-  });
-
-  revalidateCore();
+  redirectToUsuarios("success", "Usuario atualizado com sucesso.");
 }
 
 export async function deactivateUserAction(formData: FormData) {
-  const db = getDb();
-  const id = getText(formData, "id");
+  try {
+    const db = getDb();
+    const id = getText(formData, "id");
 
-  if (!id) {
-    throw new Error("Usuario obrigatorio.");
+    if (!id) {
+      throw new Error("Usuario obrigatorio.");
+    }
+
+    const { error } = await db
+      .from("usuarios")
+      .update({
+        status: "inativo",
+        updated_at: new Date().toISOString()
+      })
+      .eq("id", id);
+
+    if (error) {
+      throw new Error(error.message);
+    }
+
+    await auditEvent({
+      acao: "usuario.desativado",
+      entidade: "usuarios",
+      entidadeId: id
+    });
+
+    revalidateCore();
+  } catch (error) {
+    redirectToUsuarios("error", getActionErrorMessage(error));
   }
 
-  const { error } = await db
-    .from("usuarios")
-    .update({
-      status: "inativo",
-      updated_at: new Date().toISOString()
-    })
-    .eq("id", id);
-
-  if (error) {
-    throw new Error(error.message);
-  }
-
-  await auditEvent({
-    acao: "usuario.desativado",
-    entidade: "usuarios",
-    entidadeId: id
-  });
-
-  revalidateCore();
+  redirectToUsuarios("success", "Usuario desativado.");
 }
 
 export async function createWalletAction(formData: FormData) {

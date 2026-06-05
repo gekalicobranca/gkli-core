@@ -5,11 +5,19 @@ import {
   updateUserAction
 } from "@/features/gkli-core/actions";
 import { getCoreData } from "@/features/gkli-core/repository";
-import { CoreShell, PageHeader, Panel, StatusBadge } from "@/features/gkli-core/ui";
+import { CoreShell, InlineNotice, PageHeader, Panel, StatusBadge } from "@/features/gkli-core/ui";
 
 export const dynamic = "force-dynamic";
 
-export default async function UsuariosPage() {
+type UsuariosPageProps = {
+  searchParams?: Promise<{
+    error?: string;
+    success?: string;
+  }>;
+};
+
+export default async function UsuariosPage({ searchParams }: UsuariosPageProps) {
+  const params = await searchParams;
   const { accessTypes, apps, users, wallets } = await getCoreData();
 
   return (
@@ -29,6 +37,18 @@ export default async function UsuariosPage() {
           </button>
         }
       />
+
+      {params?.error ? (
+        <div className="stack-lg">
+          <InlineNotice title="Nao foi possivel salvar" description={params.error} tone="red" />
+        </div>
+      ) : null}
+
+      {params?.success ? (
+        <div className="stack-lg">
+          <InlineNotice title="Operacao concluida" description={params.success} tone="green" />
+        </div>
+      ) : null}
 
       <Panel title="Usuarios cadastrados" note="Base operacional">
         <table className="table">
