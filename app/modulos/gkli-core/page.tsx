@@ -55,12 +55,14 @@ export default function CoreHubPage() {
 
           return (
             <article className="app-card" key={app.id}>
-              <div className="app-card-art">
-                <img alt="" src="/gkit-icon.png" />
-              </div>
               <div className="app-card-body">
                 <div>
-                  <h3>{app.nome}</h3>
+                  <div className="app-card-title-row">
+                    <span className="app-card-icon">
+                      <img alt="" src="/gkit-icon.png" />
+                    </span>
+                    <h3>{app.nome}</h3>
+                  </div>
                   <p>{app.descricao}</p>
                   <span className="app-area">{app.area}</span>
                 </div>
