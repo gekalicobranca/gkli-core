@@ -5203,6 +5203,156 @@ tbody tr:hover {
   }
 }
 
+.regua-smtp-selector {
+  padding-bottom: 14px !important;
+}
+
+.regua-smtp-scope-form {
+  grid-template-columns: minmax(280px, 560px) auto;
+  margin-bottom: 10px;
+}
+
+.regua-smtp-selector > p {
+  color: #64748b;
+  font-size: 13px;
+  margin: 0;
+}
+
+.regua-smtp-status-grid {
+  display: grid;
+  gap: 16px;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.regua-smtp-status-grid .metric-card {
+  min-height: 150px;
+  padding: 22px;
+}
+
+.regua-smtp-status-grid .metric-value {
+  font-size: 25px;
+  margin-top: 22px;
+}
+
+.regua-smtp-host {
+  overflow-wrap: anywhere;
+}
+
+.regua-smtp-layout {
+  display: grid;
+  gap: 18px;
+  grid-template-columns: minmax(0, 1fr) 390px;
+}
+
+.regua-smtp-fields {
+  display: grid;
+  gap: 16px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.regua-smtp-fields label,
+.regua-smtp-test-form > label {
+  display: grid;
+  gap: 7px;
+}
+
+.regua-smtp-fields label > span,
+.regua-smtp-test-form label > span {
+  color: #334155;
+  font-size: 13px;
+}
+
+.regua-smtp-fields input,
+.regua-smtp-test-form input {
+  border: 1px solid #dbe3ec;
+  border-radius: 11px;
+  min-height: 44px;
+  padding: 10px 12px;
+  width: 100%;
+}
+
+.regua-smtp-fields small {
+  color: #64748b;
+  font-size: 11px;
+}
+
+.regua-smtp-toggles {
+  display: grid;
+  gap: 12px;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  margin-top: 18px;
+}
+
+.regua-smtp-toggles > label {
+  align-items: flex-start;
+  border: 1px solid #e2e8f0;
+  border-radius: 13px;
+  display: flex;
+  gap: 10px;
+  min-height: 100px;
+  padding: 14px;
+}
+
+.regua-smtp-toggles input {
+  accent-color: var(--gkli-primary);
+  margin-top: 3px;
+}
+
+.regua-smtp-toggles span,
+.regua-smtp-toggles small,
+.regua-smtp-summary span {
+  display: block;
+}
+
+.regua-smtp-toggles small {
+  color: #64748b;
+  font-size: 11px;
+  line-height: 1.5;
+  margin-top: 6px;
+}
+
+.regua-smtp-test-form {
+  align-self: start;
+}
+
+.regua-smtp-test-form > p:not(.suite-section-kicker) {
+  color: #64748b;
+  font-size: 13px;
+  line-height: 1.6;
+  margin: 6px 0 24px;
+}
+
+.regua-smtp-test-form .button {
+  margin-top: 14px;
+  width: 100%;
+}
+
+.regua-smtp-summary {
+  background: #f8fafc;
+  border-radius: 13px;
+  color: #475569;
+  display: grid;
+  font-size: 13px;
+  gap: 7px;
+  margin-top: 24px;
+  padding: 16px;
+}
+
+@media (max-width: 1180px) {
+  .regua-smtp-layout {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 760px) {
+  .regua-smtp-scope-form,
+  .regua-smtp-status-grid,
+  .regua-smtp-fields,
+  .regua-smtp-toggles {
+    grid-template-columns: 1fr;
+  }
+}
+
 /* GKLI Régua — transitional messaging workspace, aligned with GKLI Cob. */
 .gkli-regua-shell .module-main {
   background: #f8fafc;

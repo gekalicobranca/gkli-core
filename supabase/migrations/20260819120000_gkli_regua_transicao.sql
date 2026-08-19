@@ -102,6 +102,28 @@ create table if not exists gkli_regua.lote_itens (
   unique (lote_id, importacao_item_id, destinatario)
 );
 
+create table if not exists gkli_regua.smtp_configuracoes (
+  id uuid primary key default extensions.gen_random_uuid(),
+  carteira_id uuid references gkli_regua.carteiras(id) on delete cascade,
+  ativo boolean not null default false,
+  host text not null,
+  porta integer not null default 587 check (porta between 1 and 65535),
+  usuario text,
+  senha_encriptada text,
+  remetente text not null,
+  reply_to text,
+  secure boolean not null default false,
+  starttls boolean not null default true,
+  ehlo_domain text not null default 'gekali.com.br',
+  atualizado_por uuid references security.usuarios(id) on delete set null,
+  atualizado_em timestamptz not null default now()
+);
+
+create unique index if not exists gkli_regua_smtp_global_uidx
+  on gkli_regua.smtp_configuracoes ((carteira_id is null)) where carteira_id is null;
+create unique index if not exists gkli_regua_smtp_carteira_uidx
+  on gkli_regua.smtp_configuracoes (carteira_id) where carteira_id is not null;
+
 create index if not exists gkli_regua_importacoes_created_idx on gkli_regua.importacoes (created_at desc);
 create index if not exists gkli_regua_lotes_created_idx on gkli_regua.lotes (created_at desc);
 create index if not exists gkli_regua_lote_itens_status_idx on gkli_regua.lote_itens (lote_id, status);
@@ -113,6 +135,7 @@ alter table gkli_regua.importacoes enable row level security;
 alter table gkli_regua.importacao_itens enable row level security;
 alter table gkli_regua.lotes enable row level security;
 alter table gkli_regua.lote_itens enable row level security;
+alter table gkli_regua.smtp_configuracoes enable row level security;
 
 revoke all on schema gkli_regua from anon, authenticated;
 revoke all on all tables in schema gkli_regua from anon, authenticated;

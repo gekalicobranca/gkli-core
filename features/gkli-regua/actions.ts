@@ -2,9 +2,8 @@
 
 import { revalidatePath } from 'next/cache'
 import * as XLSX from 'xlsx'
-import { canAccess } from '@/lib/auth/permissions'
-import { requireModuleAccess } from '@/lib/auth/platform'
 import { createSupabaseAdminClient } from '@/lib/supabase/admin'
+import { requireWriteRegua } from './write-access'
 
 function admin() { return createSupabaseAdminClient() as any }
 function text(formData: FormData, key: string) { return String(formData.get(key) ?? '').trim() }
@@ -46,9 +45,7 @@ function render(source: string, values: Record<string, string>) {
 }
 
 async function requireWrite() {
-  const context = await requireModuleAccess('gkli-regua', '/modulos/gkli-regua')
-  if (!canAccess(context.permissions, 'gkli_regua.write')) throw new Error('Você não tem permissão para operar o GKLI Régua.')
-  return context
+  return requireWriteRegua('/modulos/gkli-regua')
 }
 
 export async function criarCarteiraRegua(formData: FormData) {

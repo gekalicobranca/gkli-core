@@ -15,6 +15,9 @@ const navGroups: ModuleNavGroup[] = [
     { href: '/modulos/gkli-regua#clientes', label: 'Clientes' },
     { href: '/modulos/gkli-regua#templates', label: 'Templates' },
   ] },
+  { title: 'Configurações', items: [
+    { href: '/modulos/gkli-regua/configuracoes/smtp', label: 'Integração SMTP' },
+  ] },
 ]
 
 export function ReguaShell({ children, usuario }: { children: ReactNode; usuario: PlatformUsuario }) {
