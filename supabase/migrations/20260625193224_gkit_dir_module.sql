@@ -22,7 +22,7 @@ with rows(codigo, nome, descricao, recurso, acao, sistema, status) as (
     ('gkit_dir.clientes.read', 'GKIT DIR - ler clientes', 'Consultar diretorio de clientes vindo do Ciclo.', 'gkit_dir.clientes', 'read', true, 'ativo')
 )
 insert into security.permissoes (codigo, nome, descricao, app_id, recurso, acao, sistema, status)
-select rows.codigo, rows.nome, rows.descricao, apps.id, rows.recurso, rows.acao, rows.sistema, rows.status::core.status_registro
+select rows.codigo, rows.nome, rows.descricao, apps.id, rows.recurso, rows.acao, rows.sistema, rows.status::text
 from rows
 left join core.apps apps on apps.codigo = 'gkit_dir'
 on conflict (codigo) do update

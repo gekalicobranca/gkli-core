@@ -1,7 +1,7 @@
 begin;
 
 update core.apps
-set status = 'inativo'::core.status_registro
+set status = 'inativo'::text
 where codigo = 'din';
 
 update security.usuario_app_acessos
@@ -13,7 +13,7 @@ where app_id in (
 );
 
 update security.permissoes
-set status = 'inativo'::core.status_registro
+set status = 'inativo'::text
 where codigo like 'din.%';
 
 commit;

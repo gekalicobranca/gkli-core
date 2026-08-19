@@ -67,7 +67,7 @@ with rows(codigo, nome, descricao, recurso, acao, sistema, status) as (
     ('gkit_flex.colaboradores.write', 'GKIT Flex - gravar colaboradores', 'Gerenciar complementos financeiros de colaboradores.', 'gkit_flex.colaboradores', 'write', true, 'ativo')
 )
 insert into security.permissoes (codigo, nome, descricao, app_id, recurso, acao, sistema, status)
-select rows.codigo, rows.nome, rows.descricao, apps.id, rows.recurso, rows.acao, rows.sistema, rows.status::core.status_registro
+select rows.codigo, rows.nome, rows.descricao, apps.id, rows.recurso, rows.acao, rows.sistema, rows.status::text
 from rows
 left join core.apps apps on apps.codigo = 'gkit_flex'
 on conflict (codigo) do update

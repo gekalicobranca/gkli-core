@@ -8,7 +8,7 @@ create table if not exists core.times (
   ) stored,
   descricao text,
   area text,
-  status core.status_registro not null default 'ativo',
+  status text not null default 'ativo',
   metadata jsonb not null default '{}'::jsonb,
   created_at timestamptz not null default now(),
   updated_at timestamptz not null default now(),
@@ -44,6 +44,34 @@ create table if not exists core.time_colaboradores (
   updated_at timestamptz not null default now(),
   unique (time_id, usuario_id)
 );
+
+-- Completa tabelas que já podem ter sido criadas pelo bootstrap enxuto.
+alter table core.times
+  add column if not exists slug text generated always as (
+    lower(regexp_replace(trim(nome), '[^a-zA-Z0-9]+', '_', 'g'))
+  ) stored,
+  add column if not exists metadata jsonb not null default '{}'::jsonb,
+  add column if not exists updated_at timestamptz not null default now();
+create unique index if not exists core_times_slug_uidx on core.times(slug);
+
+alter table core.carteira_colaboradores
+  add column if not exists papel text,
+  add column if not exists data_inicio date,
+  add column if not exists data_fim date,
+  add column if not exists metadata jsonb not null default '{}'::jsonb,
+  add column if not exists updated_at timestamptz not null default now();
+
+alter table core.time_colaboradores
+  add column if not exists papel text,
+  add column if not exists data_inicio date,
+  add column if not exists data_fim date,
+  add column if not exists metadata jsonb not null default '{}'::jsonb,
+  add column if not exists updated_at timestamptz not null default now();
+
+alter table core.carteiras
+  add column if not exists nome_normalizado text generated always as (
+    lower(regexp_replace(trim(nome), '[^a-zA-Z0-9]+', '_', 'g'))
+  ) stored;
 
 create index if not exists idx_core_carteira_colaboradores_carteira
   on core.carteira_colaboradores(carteira_id);
@@ -150,7 +178,7 @@ with rows(codigo, nome, descricao, recurso, acao, sistema, status) as (
     ('admin.times.write', 'Gerenciar times', 'Criar e manter times operacionais do Core.', 'admin.times', 'write', true, 'ativo')
 )
 insert into security.permissoes (codigo, nome, descricao, app_id, recurso, acao, sistema, status)
-select rows.codigo, rows.nome, rows.descricao, null, rows.recurso, rows.acao, rows.sistema, rows.status::core.status_registro
+select rows.codigo, rows.nome, rows.descricao, null, rows.recurso, rows.acao, rows.sistema, rows.status::text
 from rows
 on conflict (codigo) do update
 set
@@ -179,7 +207,8 @@ values
   ('Administrativo', 'Time administrativo e financeiro.', 'administrativo', 'ativo', '{"origem":"seed_core"}'::jsonb)
 on conflict (slug) do nothing;
 
-create or replace view security.v_carteiras_admin
+drop view if exists security.v_carteiras_admin;
+create view security.v_carteiras_admin
 with (security_invoker = true) as
 select
   c.id,
@@ -198,7 +227,8 @@ left join security.usuario_carteiras uc on uc.carteira_id = c.id
 left join core.carteira_colaboradores cc on cc.carteira_id = c.id
 group by c.id;
 
-create or replace view security.v_times_admin
+drop view if exists security.v_times_admin;
+create view security.v_times_admin
 with (security_invoker = true) as
 select
   t.id,

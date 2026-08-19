@@ -1,38 +1,7 @@
 begin;
 
--- Módulos removidos da superfície: bloqueia acesso direto via PostgREST.
-revoke all privileges on all tables in schema crm from anon, authenticated;
-revoke all privileges on all sequences in schema crm from anon, authenticated;
-revoke all privileges on all functions in schema crm from anon, authenticated;
-revoke usage on schema crm from anon, authenticated;
-
-revoke all privileges on all tables in schema gkli_intr from anon, authenticated;
-revoke all privileges on all sequences in schema gkli_intr from anon, authenticated;
-revoke all privileges on all functions in schema gkli_intr from anon, authenticated;
-revoke usage on schema gkli_intr from anon, authenticated;
-
--- CRM foi removido; sem policies, RLS passa a negar acesso direto a authenticated.
-drop policy if exists atividades_select_crm_scope on crm.atividades;
-drop policy if exists atividades_write_crm_scope on crm.atividades;
-drop policy if exists contatos_select_crm_scope on crm.contatos;
-drop policy if exists contatos_write_crm_scope on crm.contatos;
-drop policy if exists empresas_select_crm_scope on crm.empresas;
-drop policy if exists empresas_write_crm_scope on crm.empresas;
-drop policy if exists empresas_contatos_select_crm_scope on crm.empresas_contatos;
-drop policy if exists empresas_contatos_write_crm_scope on crm.empresas_contatos;
-drop policy if exists oportunidades_select_crm_scope on crm.oportunidades;
-drop policy if exists oportunidades_write_crm_scope on crm.oportunidades;
-drop policy if exists propostas_select_crm_scope on crm.propostas;
-drop policy if exists propostas_write_crm_scope on crm.propostas;
-
--- Remove policies amplas do legado financeiro já desativado.
-drop policy if exists fix_authenticated_all_contas_pagar_operacionais on gkli_intr.contas_pagar_operacionais;
-drop policy if exists fix_authenticated_all_extrato_importacoes on gkli_intr.extrato_importacoes;
-drop policy if exists fix_authenticated_all_extrato_lancamentos on gkli_intr.extrato_lancamentos;
-drop policy if exists fix_authenticated_all_financeiro_categorias on gkli_intr.financeiro_categorias;
-drop policy if exists fix_authenticated_all_financeiro_previsoes on gkli_intr.financeiro_previsoes;
-drop policy if exists fix_authenticated_all_financeiro_regras_classificacao on gkli_intr.financeiro_regras_classificacao;
-drop policy if exists fix_authenticated_all_financeiro_sugestoes on gkli_intr.financeiro_sugestoes;
+-- As instâncias novas da GEKALI nunca tiveram os schemas legados crm e gkli_intr.
+-- A remoção física defensiva continua sendo feita em migração posterior.
 
 -- Otimiza policies que chamavam auth.uid() por linha.
 drop policy if exists usuario_app_acessos_select_self_or_admin on security.usuario_app_acessos;

@@ -6,7 +6,7 @@ values (
   'din',
   'GKIT DIN',
   'Faturamento mensal: repasses, clientes do ciclo e exportacao Omie.',
-  'ativo'::core.status_registro,
+  'ativo'::text,
   '/modulos/din',
   45
 )
@@ -21,7 +21,7 @@ set
 
 update core.apps
 set
-  status = 'inativo'::core.status_registro,
+  status = 'inativo'::text,
   url_path = '/modulos/din',
   updated_at = now()
 where codigo in ('intr', 'fix', 'flex');
