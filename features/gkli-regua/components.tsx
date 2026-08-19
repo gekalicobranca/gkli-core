@@ -1,7 +1,7 @@
 import type { ReactNode } from 'react'
 import { ModuleShell, type ModuleNavGroup } from '@/features/shared/module-shell'
 import type { PlatformUsuario } from '@/lib/auth/platform'
-import { criarCarteiraRegua, criarClienteRegua, criarTemplateRegua, gerarLoteRegua, importarBaseRegua } from './actions'
+import { criarCarteiraRegua, criarClienteRegua, criarTemplateRegua, gerarLoteRegua, importarBaseRegua, importarCredoresRegua } from './actions'
 import type { ReguaData } from './types'
 
 const navGroups: ModuleNavGroup[] = [
@@ -33,7 +33,7 @@ export function ReguaShell({ children, usuario }: { children: ReactNode; usuario
   )
 }
 
-function carteiraNome(data: ReguaData, id: string) { return data.carteiras.find((item) => item.id === id)?.nome ?? 'Carteira' }
+function carteiraNome(data: ReguaData, id: string | null) { return id ? data.carteiras.find((item) => item.id === id)?.nome ?? 'Carteira' : 'Múltiplas carteiras' }
 function templateNome(data: ReguaData, id: string) { return data.templates.find((item) => item.id === id)?.nome ?? 'Template' }
 function date(value: string) { return new Intl.DateTimeFormat('pt-BR', { dateStyle: 'short', timeStyle: 'short' }).format(new Date(value)) }
 
@@ -51,10 +51,13 @@ export function ReguaPage({ data, canWrite }: { data: ReguaData; canWrite: boole
 
       <section className="suite-panel" id="importacoes">
         <div className="suite-panel-heading"><div><p className="suite-section-kicker">Entrada controlada</p><h2>Importar base da régua atual</h2><p>Use XLSX, XLS ou CSV. Colunas reconhecidas: nome/cliente, e-mail, documento, valor, vencimento e referência.</p></div></div>
+        <form action={importarCredoresRegua} className="regua-form regua-form-reference">
+          <label><span>1. Referência de credores</span><input accept=".csv,.xlsx,.xls" name="arquivo_referencia" type="file" required disabled={!canWrite} /></label>
+          <button className="button secondary" type="submit" disabled={!canWrite}>Atualizar códigos e carteiras</button>
+        </form>
         <form action={importarBaseRegua} className="regua-form regua-form-import">
-          <label><span>Carteira</span><select name="carteira_id" required disabled={!canWrite}><option value="">Selecione</option>{data.carteiras.filter((item) => item.status === 'ativo').map((item) => <option key={item.id} value={item.id}>{item.nome}</option>)}</select></label>
-          <label><span>Arquivo</span><input accept=".xlsx,.xls,.csv" name="arquivo" type="file" required disabled={!canWrite} /></label>
-          <button className="button" type="submit" disabled={!canWrite || !data.carteiras.length}>Importar e validar</button>
+          <label><span>2. Planilha de carga</span><input accept=".xlsx,.xls,.csv" name="arquivo" type="file" required disabled={!canWrite} /></label>
+          <button className="button" type="submit" disabled={!canWrite || !data.carteiras.length}>Cruzar códigos e importar</button>
         </form>
         <div className="suite-table-list compact">
           {data.importacoes.map((item) => <article key={item.id}><div><h3>{item.arquivo_nome}</h3><p>{carteiraNome(data, item.carteira_id)} · {date(item.created_at)}</p></div><span className="suite-pill success">{item.status}</span><strong>{item.linhas_validas} aptos</strong><small>{item.linhas_invalidas} inválidos</small></article>)}
@@ -66,6 +69,7 @@ export function ReguaPage({ data, canWrite }: { data: ReguaData; canWrite: boole
         <div className="suite-panel-heading"><div><p className="suite-section-kicker">Mensageria</p><h2>Gerar lote de e-mails</h2><p>O lote congela assunto, conteúdo e destinatário para revisão e envio posterior.</p></div></div>
         <form action={gerarLoteRegua} className="regua-form regua-form-lote">
           <label><span>Nome do lote</span><input name="nome" placeholder="Ex.: Régua agosto · Carteira Centro" required disabled={!canWrite} /></label>
+          <label><span>Carteira</span><select name="carteira_id" required disabled={!canWrite}><option value="">Selecione</option>{data.carteiras.filter((item) => item.status === 'ativo').map((item) => <option key={item.id} value={item.id}>{item.codigo} · {item.nome}</option>)}</select></label>
           <label><span>Importação</span><select name="importacao_id" required disabled={!canWrite}><option value="">Selecione</option>{data.importacoes.filter((item) => item.linhas_validas > 0).map((item) => <option key={item.id} value={item.id}>{item.arquivo_nome} · {item.linhas_validas} aptos</option>)}</select></label>
           <label><span>Template</span><select name="template_id" required disabled={!canWrite}><option value="">Selecione</option>{data.templates.filter((item) => item.status === 'ativo').map((item) => <option key={item.id} value={item.id}>{item.nome}</option>)}</select></label>
           <button className="button" type="submit" disabled={!canWrite || !data.importacoes.length || !data.templates.length}>Preparar lote</button>

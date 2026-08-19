@@ -5234,11 +5234,17 @@ tbody tr:hover {
 }
 
 .regua-form-import {
-  grid-template-columns: minmax(220px, .7fr) minmax(320px, 1.3fr) auto;
+  grid-template-columns: minmax(320px, 1fr) auto;
+}
+
+.regua-form-reference {
+  grid-template-columns: minmax(320px, 1fr) auto;
+  border-bottom: 1px solid #e2e8f0;
+  padding-bottom: 18px;
 }
 
 .regua-form-lote {
-  grid-template-columns: repeat(3, minmax(190px, 1fr)) auto;
+  grid-template-columns: repeat(4, minmax(170px, 1fr)) auto;
 }
 
 .regua-form.stacked {
