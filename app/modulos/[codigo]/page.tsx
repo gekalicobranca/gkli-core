@@ -36,10 +36,6 @@ export default async function ModuloPage({
     redirect('/modulos/gkli-flex')
   }
 
-  if (codigo === 'gkit_jur') {
-    redirect('/modulos/gkit-jur')
-  }
-
   if (codigo === 'gkit_performa') {
     redirect('/modulos/gkit-performa')
   }

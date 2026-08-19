@@ -29,7 +29,6 @@ const moduleMeta: Record<string, Pick<ModuleCard, 'area' | 'icon'>> = {
   'gkli-ate': { area: 'Atendimento', icon: 'clock' },
   'gkli-dir': { area: 'Diretório', icon: 'grid' },
   'gkli-flex': { area: 'Financial Xperience', icon: 'flex' },
-  'gkit-jur': { area: 'Juridico', icon: 'shield' },
   'gkli-new': { area: 'Novos negocios', icon: 'crm' },
   'gkli-regua': { area: 'Mensageria transitória', icon: 'clock' },
   'gkit-performa': { area: 'Performance', icon: 'clock' },
@@ -79,13 +78,6 @@ const moduleDisplay: Record<string, Pick<ModuleCard, 'nome' | 'descricao' | 'are
     area: 'Mensageria transitória',
     icon: 'clock',
     href: '/modulos/gkli-regua',
-  },
-  'gkit-jur': {
-    nome: 'GKLI Jur',
-    descricao: 'Operacao juridica integrada: processos, prazos, agenda e documentos.',
-    area: 'Juridico',
-    icon: 'shield',
-    href: '/modulos/gkit-jur/inbox',
   },
   'gkit-performa': {
     nome: 'GKLI Performa',
