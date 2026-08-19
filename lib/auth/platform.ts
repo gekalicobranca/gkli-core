@@ -22,32 +22,12 @@ export type PlatformModule = {
 }
 
 const MODULE_PATHS: Record<string, string> = {
-  ciclo: '/modulos/ciclo',
   core: '/admin',
-  'gkli-ate': '/modulos/gkli-ate',
-  'gkli-dir': '/modulos/gkli-dir',
-  'gkli-flex': '/modulos/gkli-flex',
-  'gkli-new': '/modulos/gkli-new',
   'gkli-regua': '/modulos/gkli-regua',
-  gkli_ate: '/modulos/gkli-ate',
-  gkli_dir: '/modulos/gkli-dir',
-  gkli_flex: '/modulos/gkli-flex',
-  gkli_new: '/modulos/gkli-new',
   gkli_regua: '/modulos/gkli-regua',
-  'gkit-ate': '/modulos/gkli-ate',
-  'gkit-dir': '/modulos/gkli-dir',
-  'gkit-flex': '/modulos/gkli-flex',
-  'gkit-new': '/modulos/gkli-new',
-  'gkit-performa': '/modulos/gkit-performa',
-  gkit_ate: '/modulos/gkli-ate',
-  gkit_dir: '/modulos/gkli-dir',
-  gkit_flex: '/modulos/gkli-flex',
-  gkit_new: '/modulos/gkli-new',
-  gkit_performa: '/modulos/gkit-performa',
-  colab: '/modulos/colab',
-  painel: '/modulos/painel',
-  sind: '/modulos/sind',
 }
+
+const ACTIVE_APP_CODES = ['gkli-regua', 'gkli_regua']
 
 function admin() {
   return createSupabaseAdminClient() as any
@@ -70,11 +50,6 @@ function moduleHref(app: any, codigo: string) {
 
 function moduleCode(codigo: unknown) {
   const value = String(codigo)
-  if (value === 'gkit_ate' || value === 'gkit-ate' || value === 'gkli_ate' || value === 'gkli-ate') return 'gkli-ate'
-  if (value === 'gkit_dir' || value === 'gkit-dir' || value === 'gkli_dir' || value === 'gkli-dir') return 'gkli-dir'
-  if (value === 'gkit_flex' || value === 'gkit-flex' || value === 'gkli_flex' || value === 'gkli-flex') return 'gkli-flex'
-  if (value === 'gkit_new' || value === 'gkit-new' || value === 'gkli_new' || value === 'gkli-new') return 'gkli-new'
-  if (value === 'gkit_performa') return 'gkit-performa'
   if (value === 'gkli_regua' || value === 'gkli-regua') return 'gkli-regua'
   return value
 }
@@ -104,6 +79,7 @@ async function listActiveModulesFor(usuario: PlatformUsuario, permissions: strin
       .schema('core')
       .from('apps')
       .select('*')
+      .in('codigo', ACTIVE_APP_CODES)
       .eq('status', 'ativo')
       .order('ordem', { ascending: true })
       .order('nome', { ascending: true })
@@ -129,6 +105,7 @@ async function listActiveModulesFor(usuario: PlatformUsuario, permissions: strin
     .from('apps')
     .select('*')
     .in('id', appIds)
+    .in('codigo', ACTIVE_APP_CODES)
     .eq('status', 'ativo')
     .order('ordem', { ascending: true })
     .order('nome', { ascending: true })

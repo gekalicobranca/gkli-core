@@ -11,10 +11,8 @@
   "dependencies": {
     "@supabase/ssr": "^0.12.0",
     "@supabase/supabase-js": "^2.110.0",
-    "exceljs": "4.4.0",
     "lucide-react": "^0.468.0",
     "next": "16.2.9",
-    "pdfjs-dist": "5.7.284",
     "react": "latest",
     "react-dom": "latest",
     "xlsx": "latest"

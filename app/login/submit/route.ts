@@ -24,7 +24,7 @@ function loginUrl(request: NextRequest, next: string, error: string) {
 }
 
 function setLoginAttemptCookie(response: NextResponse, request: NextRequest, value: string) {
-  response.cookies.set('gkit_login_attempt', value, {
+  response.cookies.set('gkli_login_attempt', value, {
     httpOnly: true,
     maxAge: 300,
     path: '/',
@@ -82,7 +82,7 @@ export async function POST(request: NextRequest) {
   }
 
   setLoginAttemptCookie(response, request, 'success')
-  response.cookies.set('gkit_login_probe', 'ok', {
+  response.cookies.set('gkli_login_probe', 'ok', {
     httpOnly: true,
     maxAge: 300,
     path: '/',

@@ -143,7 +143,7 @@ grant usage on schema gkli_regua to service_role;
 grant all on all tables in schema gkli_regua to service_role;
 
 alter role authenticator set pgrst.db_schemas =
-  'public, graphql_public, audit, core, security, ciclo, gkit_new, gkit_ate, gkit_performa, gkli_regua';
+  'public, graphql_public, audit, core, security, gkli_regua';
 
 insert into core.apps (codigo, nome, descricao, status, url_path, ordem)
 values (

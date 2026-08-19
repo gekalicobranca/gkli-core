@@ -189,24 +189,6 @@ set
   sistema = excluded.sistema,
   status = excluded.status;
 
-insert into core.carteira_colaboradores (carteira_id, usuario_id, principal, ativo, metadata)
-select distinct c.carteira_id, c.usuario_id, true, true, jsonb_build_object('origem', 'gkit_flex_colaboradores')
-from public.gkit_flex_colaboradores c
-where c.carteira_id is not null
-on conflict (carteira_id, usuario_id) do update
-set
-  ativo = true,
-  principal = core.carteira_colaboradores.principal or excluded.principal,
-  metadata = core.carteira_colaboradores.metadata || excluded.metadata,
-  updated_at = now();
-
-insert into core.times (nome, descricao, area, status, metadata)
-values
-  ('Contencioso', 'Time juridico responsavel pela conducao contenciosa.', 'juridico', 'ativo', '{"origem":"seed_core"}'::jsonb),
-  ('Cobranca', 'Time responsavel por cobranca e recuperacao.', 'operacao', 'ativo', '{"origem":"seed_core"}'::jsonb),
-  ('Administrativo', 'Time administrativo e financeiro.', 'administrativo', 'ativo', '{"origem":"seed_core"}'::jsonb)
-on conflict (slug) do nothing;
-
 drop view if exists security.v_carteiras_admin;
 create view security.v_carteiras_admin
 with (security_invoker = true) as

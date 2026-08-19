@@ -20,7 +20,7 @@ export async function getDashboardStats() {
     supabase.schema('security').from('usuarios').select('id', { count: 'exact', head: true }).eq('status', 'ativo'),
     supabase.schema('core').from('carteiras').select('id', { count: 'exact', head: true }).eq('status', 'ativo'),
     supabase.schema('core').from('times').select('id', { count: 'exact', head: true }).eq('status', 'ativo'),
-    supabase.schema('core').from('apps').select('id', { count: 'exact', head: true }).eq('status', 'ativo'),
+    supabase.schema('core').from('apps').select('id', { count: 'exact', head: true }).in('codigo', ['gkli-regua', 'gkli_regua']).eq('status', 'ativo'),
     supabase.schema('security').from('perfis').select('id', { count: 'exact', head: true }).eq('status', 'ativo'),
     supabase.schema('audit').from('v_eventos_admin').select('*').order('created_at', { ascending: false }).limit(8),
   ])
@@ -189,6 +189,7 @@ export async function listApps() {
     .schema('security')
     .from('v_apps_admin')
     .select('*')
+    .in('codigo', ['gkli-regua', 'gkli_regua'])
     .order('nome', { ascending: true })
 
   if (error) throw new Error(error.message)
@@ -201,6 +202,7 @@ export async function getApp(id: string) {
     .from('apps')
     .select('*')
     .eq('id', id)
+    .in('codigo', ['gkli-regua', 'gkli_regua'])
     .single()
 
   if (error) throw new Error(error.message)
