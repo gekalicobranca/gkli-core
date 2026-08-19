@@ -1,38 +1,32 @@
+import Link from 'next/link'
 import type { ReactNode } from 'react'
-import { ModuleShell, type ModuleNavGroup } from '@/features/shared/module-shell'
+import { FileText, Gauge, Layers, Mail, Settings, Upload, UserRound, Users } from 'lucide-react'
+import { BrandLogo } from '@/features/shared/brand-logo'
 import type { PlatformUsuario } from '@/lib/auth/platform'
 import { criarCarteiraRegua, criarClienteRegua, criarTemplateRegua, gerarLoteRegua, importarBaseRegua, importarCredoresRegua } from './actions'
 import type { ReguaData } from './types'
 
-const navGroups: ModuleNavGroup[] = [
-  { href: '/modulos/gkli-regua', title: 'Cockpit' },
-  { title: 'Operação', items: [
-    { href: '/modulos/gkli-regua#importacoes', label: 'Importações' },
-    { href: '/modulos/gkli-regua#lotes', label: 'Lotes de e-mail' },
-  ] },
-  { title: 'Cadastros', items: [
-    { href: '/modulos/gkli-regua#carteiras', label: 'Carteiras' },
-    { href: '/modulos/gkli-regua#clientes', label: 'Clientes' },
-    { href: '/modulos/gkli-regua#templates', label: 'Templates' },
-  ] },
-  { title: 'Configurações', items: [
-    { href: '/modulos/gkli-regua/configuracoes/smtp', label: 'Integração SMTP' },
-  ] },
-]
-
 export function ReguaShell({ children, usuario }: { children: ReactNode; usuario: PlatformUsuario }) {
   return (
-    <ModuleShell
-      activeHref="/modulos/gkli-regua"
-      brand="Operação transitória de mensageria"
-      description="Importe a base atual, prepare lotes auditáveis e faça a transição segura para o GKLI Cob."
-      eyebrow="GKLI RÉGUA"
-      navGroups={navGroups}
-      product="GKLI Régua"
-      title="Régua de transição"
-      usuario={usuario}
-      variantClassName="gkli-regua-shell"
-    >{children}</ModuleShell>
+    <main className="gkli-regua-shell cob-shell">
+      <aside className="cob-sidebar">
+        <div className="cob-sidebar-brand"><BrandLogo className="cob-sidebar-logo" label="GKLI Régua" /><div><span>GKLI</span><strong>Régua</strong></div></div>
+        <nav aria-label="Navegação GKLI Régua">
+          <Link className="cob-featured-link" href="/modulos/gkli-regua"><span><Gauge size={16} /></span><div><strong>Cockpit operacional</strong><small>Visão geral da régua</small></div></Link>
+          <section><p>OPERAÇÃO</p><Link href="/modulos/gkli-regua#importacoes"><span><Upload size={16} /></span>Importações</Link><Link href="/modulos/gkli-regua#lotes"><span><Layers size={16} /></span>Lotes de e-mail</Link></section>
+          <section><p>CADASTROS</p><Link href="/modulos/gkli-regua#carteiras"><span><FileText size={16} /></span>Carteiras</Link><Link href="/modulos/gkli-regua#clientes"><span><Users size={16} /></span>Clientes</Link><Link href="/modulos/gkli-regua#templates"><span><Mail size={16} /></span>Templates</Link></section>
+          <section><p>CONFIGURAÇÕES</p><Link href="/modulos/gkli-regua/configuracoes/smtp"><span><Settings size={16} /></span>Integração SMTP</Link></section>
+        </nav>
+        <div className="cob-sidebar-user"><span><UserRound size={16} /></span><div><strong>{usuario.nome}</strong><small>{usuario.email}</small></div><Link href="/logout">Sair</Link></div>
+      </aside>
+      <section className="cob-main">
+        <header className="cob-topbar"><span>GKLI Régua</span><div className="cob-topbar-actions"><Link href="/modulos/gkli-regua/configuracoes/smtp"><Settings size={16} />Configurações</Link></div></header>
+        <div className="cob-content">
+          <section className="cob-page-hero"><div><span>OPERAÇÃO TRANSITÓRIA</span><h1>Régua de transição</h1><p>Importe a base atual, prepare lotes auditáveis e faça a transição segura para o GKLI Cob.</p></div><span className="cob-hero-badge"><Mail size={16} />Mensageria</span></section>
+          <div className="module-page-content">{children}</div>
+        </div>
+      </section>
+    </main>
   )
 }
 
