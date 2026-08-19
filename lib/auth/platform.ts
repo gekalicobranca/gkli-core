@@ -28,10 +28,12 @@ const MODULE_PATHS: Record<string, string> = {
   'gkli-dir': '/modulos/gkli-dir',
   'gkli-flex': '/modulos/gkli-flex',
   'gkli-new': '/modulos/gkli-new',
+  'gkli-regua': '/modulos/gkli-regua',
   gkli_ate: '/modulos/gkli-ate',
   gkli_dir: '/modulos/gkli-dir',
   gkli_flex: '/modulos/gkli-flex',
   gkli_new: '/modulos/gkli-new',
+  gkli_regua: '/modulos/gkli-regua',
   'gkit-ate': '/modulos/gkli-ate',
   'gkit-dir': '/modulos/gkli-dir',
   'gkit-flex': '/modulos/gkli-flex',
@@ -76,6 +78,7 @@ function moduleCode(codigo: unknown) {
   if (value === 'gkit_new' || value === 'gkit-new' || value === 'gkli_new' || value === 'gkli-new') return 'gkli-new'
   if (value === 'gkit_jur') return 'gkit-jur'
   if (value === 'gkit_performa') return 'gkit-performa'
+  if (value === 'gkli_regua' || value === 'gkli-regua') return 'gkli-regua'
   return value
 }
 

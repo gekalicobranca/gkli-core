@@ -31,6 +31,7 @@ const moduleMeta: Record<string, Pick<ModuleCard, 'area' | 'icon'>> = {
   'gkli-flex': { area: 'Financial Xperience', icon: 'flex' },
   'gkit-jur': { area: 'Juridico', icon: 'shield' },
   'gkli-new': { area: 'Novos negocios', icon: 'crm' },
+  'gkli-regua': { area: 'Mensageria transitória', icon: 'clock' },
   'gkit-performa': { area: 'Performance', icon: 'clock' },
   colab: { area: 'Portal do colaborador', icon: 'grid' },
   painel: { area: 'Entrada unificada', icon: 'grid' },
@@ -71,6 +72,13 @@ const moduleDisplay: Record<string, Pick<ModuleCard, 'nome' | 'descricao' | 'are
     area: 'Financial Xperience',
     icon: 'flex',
     href: '/modulos/gkli-flex',
+  },
+  'gkli-regua': {
+    nome: 'GKLI Régua',
+    descricao: 'Importação, templates e lotes de e-mail para a transição ao GKLI Cob.',
+    area: 'Mensageria transitória',
+    icon: 'clock',
+    href: '/modulos/gkli-regua',
   },
   'gkit-jur': {
     nome: 'GKLI Jur',

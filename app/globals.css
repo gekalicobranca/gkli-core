@@ -5203,6 +5203,120 @@ tbody tr:hover {
   }
 }
 
+/* GKLI Régua — transitional messaging workspace, aligned with GKLI Cob. */
+.gkli-regua-shell .module-main {
+  background: #f8fafc;
+}
+
+.gkli-regua-shell .module-page-content {
+  display: grid;
+  gap: 18px;
+}
+
+.gkli-regua-shell .suite-panel {
+  border: 1px solid #e2e8f0;
+  border-radius: 22px;
+  background: #fff;
+  box-shadow: 0 12px 30px rgba(15, 23, 42, 0.05);
+  padding: 22px;
+}
+
+.gkli-regua-shell .suite-panel-heading {
+  margin-bottom: 18px;
+}
+
+.regua-form,
+.regua-template-form {
+  align-items: end;
+  display: grid;
+  gap: 14px;
+  margin-bottom: 18px;
+}
+
+.regua-form-import {
+  grid-template-columns: minmax(220px, .7fr) minmax(320px, 1.3fr) auto;
+}
+
+.regua-form-lote {
+  grid-template-columns: repeat(3, minmax(190px, 1fr)) auto;
+}
+
+.regua-form.stacked {
+  align-items: stretch;
+  grid-template-columns: 1fr;
+}
+
+.regua-form label,
+.regua-template-form label {
+  display: grid;
+  gap: 7px;
+}
+
+.regua-form label > span,
+.regua-template-form label > span {
+  color: #475569;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.regua-form input,
+.regua-form select,
+.regua-template-form input,
+.regua-template-form textarea {
+  border: 1px solid #dbe3ec;
+  border-radius: 11px;
+  background: #fff;
+  color: #172033;
+  min-height: 42px;
+  padding: 10px 12px;
+  width: 100%;
+}
+
+.regua-template-form {
+  grid-template-columns: minmax(240px, .7fr) minmax(300px, 1fr) minmax(300px, 1fr) auto;
+}
+
+.regua-template-form textarea {
+  min-height: 178px;
+  resize: vertical;
+}
+
+.regua-cadastros-grid {
+  display: grid;
+  gap: 18px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.regua-chip-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.regua-record-count {
+  color: #64748b;
+  font-size: 13px;
+  margin: 0;
+}
+
+@media (max-width: 1180px) {
+  .regua-form-import,
+  .regua-form-lote,
+  .regua-template-form {
+    align-items: stretch;
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+@media (max-width: 760px) {
+  .regua-form-import,
+  .regua-form-lote,
+  .regua-template-form,
+  .regua-cadastros-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
 .check-list {
   display: grid;
   gap: 8px;
