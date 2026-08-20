@@ -29,6 +29,136 @@
 }
 
 /* GKLI Régua — espelho visual do GKLI Cob */
+.regua-routine-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.regua-routine-card {
+  display: grid;
+  grid-template-columns: 42px minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 14px;
+  min-height: 112px;
+  padding: 18px;
+  border: 1px solid #dce6ef;
+  border-radius: 14px;
+  background: #fff;
+  color: #183650;
+  text-decoration: none;
+  transition: border-color 160ms ease, box-shadow 160ms ease, transform 160ms ease;
+}
+
+.regua-routine-card:hover {
+  border-color: #80bfd2;
+  box-shadow: 0 10px 24px rgb(17 78 108 / 10%);
+  transform: translateY(-1px);
+}
+
+.regua-routine-card > span {
+  display: grid;
+  width: 42px;
+  height: 42px;
+  place-items: center;
+  border-radius: 12px;
+  background: #eaf5f8;
+  color: #087b9c;
+}
+
+.regua-routine-card h3,
+.regua-routine-card p { margin: 0; }
+.regua-routine-card p { margin-top: 5px; color: #60758b; font-size: 13px; line-height: 1.45; }
+.regua-routine-card > strong { color: #087b9c; font-size: 13px; font-weight: 500; }
+
+.regua-cadastro-form {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr)) auto;
+  align-items: end;
+  gap: 14px;
+}
+
+.regua-filter-bar {
+  display: grid;
+  grid-template-columns: minmax(260px, 1fr) repeat(2, minmax(150px, 220px)) auto;
+  align-items: end;
+  gap: 12px;
+  margin: 18px 0;
+  padding: 14px;
+  border: 1px solid #dce6ef;
+  border-radius: 12px;
+  background: #f8fbfd;
+}
+
+.regua-filter-bar label {
+  display: grid;
+  gap: 6px;
+  min-width: 0;
+}
+
+.regua-filter-bar label > span {
+  color: #506980;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.regua-filter-bar input,
+.regua-filter-bar select {
+  width: 100%;
+  min-height: 42px;
+  border: 1px solid #cedbe6;
+  border-radius: 9px;
+  background: #fff;
+  color: #183650;
+  padding: 0 12px;
+}
+
+.regua-filter-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 42px;
+}
+
+.regua-filter-actions a {
+  color: #60758b;
+  font-size: 13px;
+  text-decoration: none;
+}
+
+.regua-import-preview-form,
+.regua-preview-wrap { display: grid; gap: 16px; }
+.regua-preview-file { display: grid; gap: 8px; margin-top: 18px; }
+.regua-preview-file > span { color: #183650; font-size: 13px; font-weight: 500; }
+.regua-preview-file input { width: 100%; min-height: 48px; padding: 10px 12px; border: 1px solid #cedbe6; border-radius: 10px; background: #fff; }
+.regua-preview-summary { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; }
+.regua-preview-summary article { display: grid; gap: 5px; padding: 14px 16px; border: 1px solid #dce6ef; border-radius: 12px; background: #f8fbfd; }
+.regua-preview-summary span { color: #60758b; font-size: 12px; }
+.regua-preview-summary strong { color: #183650; font-size: 24px; font-weight: 400; }
+.regua-preview-table { overflow-x: auto; border: 1px solid #dce6ef; border-radius: 12px; }
+.regua-preview-table table { width: 100%; min-width: 940px; border-collapse: collapse; }
+.regua-preview-table th, .regua-preview-table td { padding: 11px 12px; border-bottom: 1px solid #e7eef4; text-align: left; vertical-align: top; font-size: 12px; }
+.regua-preview-table th { background: #f3f8fb; color: #506980; font-weight: 500; }
+.regua-preview-table td { color: #29465f; }
+.regua-preview-table td small { display: block; margin-top: 4px; color: #71859a; }
+.regua-preview-note { margin: -6px 0 0; color: #60758b; font-size: 12px; }
+.regua-preview-confirm { display: flex; align-items: center; justify-content: space-between; gap: 20px; padding: 16px; border: 1px solid #bcdde7; border-radius: 12px; background: #edf8fa; }
+.regua-preview-confirm p { display: grid; gap: 4px; margin: 0; }
+.regua-preview-confirm p span { color: #60758b; font-size: 13px; }
+
+@media (max-width: 1100px) {
+  .regua-routine-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .regua-cadastro-form { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .regua-filter-bar { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
+@media (max-width: 720px) {
+  .regua-routine-grid,
+  .regua-cadastro-form,
+  .regua-filter-bar { grid-template-columns: 1fr; }
+  .regua-preview-summary { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .regua-preview-confirm { align-items: stretch; flex-direction: column; }
+}
 .cob-shell {
   --gkli-primary: #04799a;
   --gkli-primary-hover: #03658c;
